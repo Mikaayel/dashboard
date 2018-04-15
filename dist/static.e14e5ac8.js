@@ -267,15 +267,13 @@ var _main2 = _interopRequireDefault(_main);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
 
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-
-// import worker from ''
-
-// import WebWorker from '../workers/WebWorker';
 
 var Home = function (_Component) {
 	_inherits(Home, _Component);
@@ -285,19 +283,33 @@ var Home = function (_Component) {
 
 		var _this = _possibleConstructorReturn(this, (Home.__proto__ || Object.getPrototypeOf(Home)).call(this, props));
 
-		if (window.Worker) {
-			console.log('worker supported');
-		}
+		_this.state = {
+			average: 0
+		};
+		_this.calculateAverage = _this.calculateAverage.bind(_this);
 		return _this;
 	}
 
 	_createClass(Home, [{
 		key: 'componentDidMount',
 		value: function componentDidMount() {
-			var worker = new _main2.default();
-			worker.postMessage({ a: 1 });
-			// this.worker = new WebWorker(worker);
-			// this.worker.postMessage('hello');
+			var _this2 = this;
+
+			if (window.Worker) {
+				this.worker = new _main2.default();
+				this.worker.addEventListener('message', function (event) {
+					console.log('return event', event);
+					_this2.setState(_defineProperty({}, event.data.message, event.data.payload));
+				});
+			}
+		}
+	}, {
+		key: 'calculateAverage',
+		value: function calculateAverage() {
+			this.worker.postMessage({
+				message: 'average',
+				payload: [10, 20, 30, 40, 50]
+			});
 		}
 	}, {
 		key: 'render',
@@ -309,6 +321,19 @@ var Home = function (_Component) {
 					'h1',
 					null,
 					'Home'
+				),
+				_react2.default.createElement(
+					'button',
+					{
+						onClick: this.calculateAverage,
+						type: 'button'
+					},
+					'Average'
+				),
+				_react2.default.createElement(
+					'p',
+					null,
+					this.state.average
 				)
 			);
 		}
@@ -1542,7 +1567,7 @@ module.exports = require("hoist-non-react-statics");
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports = function() {
-  return __webpack_require__(26)("/******/ (function(modules) { // webpackBootstrap\n/******/ \t// The module cache\n/******/ \tvar installedModules = {};\n/******/\n/******/ \t// The require function\n/******/ \tfunction __webpack_require__(moduleId) {\n/******/\n/******/ \t\t// Check if module is in cache\n/******/ \t\tif(installedModules[moduleId]) {\n/******/ \t\t\treturn installedModules[moduleId].exports;\n/******/ \t\t}\n/******/ \t\t// Create a new module (and put it into the cache)\n/******/ \t\tvar module = installedModules[moduleId] = {\n/******/ \t\t\ti: moduleId,\n/******/ \t\t\tl: false,\n/******/ \t\t\texports: {}\n/******/ \t\t};\n/******/\n/******/ \t\t// Execute the module function\n/******/ \t\tmodules[moduleId].call(module.exports, module, module.exports, __webpack_require__);\n/******/\n/******/ \t\t// Flag the module as loaded\n/******/ \t\tmodule.l = true;\n/******/\n/******/ \t\t// Return the exports of the module\n/******/ \t\treturn module.exports;\n/******/ \t}\n/******/\n/******/\n/******/ \t// expose the modules object (__webpack_modules__)\n/******/ \t__webpack_require__.m = modules;\n/******/\n/******/ \t// expose the module cache\n/******/ \t__webpack_require__.c = installedModules;\n/******/\n/******/ \t// define getter function for harmony exports\n/******/ \t__webpack_require__.d = function(exports, name, getter) {\n/******/ \t\tif(!__webpack_require__.o(exports, name)) {\n/******/ \t\t\tObject.defineProperty(exports, name, {\n/******/ \t\t\t\tconfigurable: false,\n/******/ \t\t\t\tenumerable: true,\n/******/ \t\t\t\tget: getter\n/******/ \t\t\t});\n/******/ \t\t}\n/******/ \t};\n/******/\n/******/ \t// getDefaultExport function for compatibility with non-harmony modules\n/******/ \t__webpack_require__.n = function(module) {\n/******/ \t\tvar getter = module && module.__esModule ?\n/******/ \t\t\tfunction getDefault() { return module['default']; } :\n/******/ \t\t\tfunction getModuleExports() { return module; };\n/******/ \t\t__webpack_require__.d(getter, 'a', getter);\n/******/ \t\treturn getter;\n/******/ \t};\n/******/\n/******/ \t// Object.prototype.hasOwnProperty.call\n/******/ \t__webpack_require__.o = function(object, property) { return Object.prototype.hasOwnProperty.call(object, property); };\n/******/\n/******/ \t// __webpack_public_path__\n/******/ \t__webpack_require__.p = \"/\";\n/******/\n/******/ \t// Load entry module and return exports\n/******/ \treturn __webpack_require__(__webpack_require__.s = 0);\n/******/ })\n/************************************************************************/\n/******/ ([\n/* 0 */\n/***/ (function(module, exports) {\n\nconsole.log('script works');\n\nself.addEventListener('message', function(event) {\n\tconsole.log(event.data);\n});\n\n/***/ })\n/******/ ]);\n//# sourceMappingURL=02f75e2abc99484e1ce2.worker.js.map", null);
+  return __webpack_require__(26)("/******/ (function(modules) { // webpackBootstrap\n/******/ \t// The module cache\n/******/ \tvar installedModules = {};\n/******/\n/******/ \t// The require function\n/******/ \tfunction __webpack_require__(moduleId) {\n/******/\n/******/ \t\t// Check if module is in cache\n/******/ \t\tif(installedModules[moduleId]) {\n/******/ \t\t\treturn installedModules[moduleId].exports;\n/******/ \t\t}\n/******/ \t\t// Create a new module (and put it into the cache)\n/******/ \t\tvar module = installedModules[moduleId] = {\n/******/ \t\t\ti: moduleId,\n/******/ \t\t\tl: false,\n/******/ \t\t\texports: {}\n/******/ \t\t};\n/******/\n/******/ \t\t// Execute the module function\n/******/ \t\tmodules[moduleId].call(module.exports, module, module.exports, __webpack_require__);\n/******/\n/******/ \t\t// Flag the module as loaded\n/******/ \t\tmodule.l = true;\n/******/\n/******/ \t\t// Return the exports of the module\n/******/ \t\treturn module.exports;\n/******/ \t}\n/******/\n/******/\n/******/ \t// expose the modules object (__webpack_modules__)\n/******/ \t__webpack_require__.m = modules;\n/******/\n/******/ \t// expose the module cache\n/******/ \t__webpack_require__.c = installedModules;\n/******/\n/******/ \t// define getter function for harmony exports\n/******/ \t__webpack_require__.d = function(exports, name, getter) {\n/******/ \t\tif(!__webpack_require__.o(exports, name)) {\n/******/ \t\t\tObject.defineProperty(exports, name, {\n/******/ \t\t\t\tconfigurable: false,\n/******/ \t\t\t\tenumerable: true,\n/******/ \t\t\t\tget: getter\n/******/ \t\t\t});\n/******/ \t\t}\n/******/ \t};\n/******/\n/******/ \t// getDefaultExport function for compatibility with non-harmony modules\n/******/ \t__webpack_require__.n = function(module) {\n/******/ \t\tvar getter = module && module.__esModule ?\n/******/ \t\t\tfunction getDefault() { return module['default']; } :\n/******/ \t\t\tfunction getModuleExports() { return module; };\n/******/ \t\t__webpack_require__.d(getter, 'a', getter);\n/******/ \t\treturn getter;\n/******/ \t};\n/******/\n/******/ \t// Object.prototype.hasOwnProperty.call\n/******/ \t__webpack_require__.o = function(object, property) { return Object.prototype.hasOwnProperty.call(object, property); };\n/******/\n/******/ \t// __webpack_public_path__\n/******/ \t__webpack_require__.p = \"/\";\n/******/\n/******/ \t// Load entry module and return exports\n/******/ \treturn __webpack_require__(__webpack_require__.s = 0);\n/******/ })\n/************************************************************************/\n/******/ ([\n/* 0 */\n/***/ (function(module, exports) {\n\nself.addEventListener('message', function({ data: { message, payload} }) {\n\tswitch(message) {\n\t\tcase 'average':\n\t\t\tself.postMessage(CalculateAverage(payload));\n\t\t\tbreak;\n\t}\n});\n\nfunction CalculateAverage(payload) {\n\tconst payloadLength = payload.length;\n\tlet total = 0;\n\tpayload.map((item) => {\n\t\ttotal = total + item;\n\t});\n\treturn {\n\t\tmessage: 'average',\n\t\tpayload: total / payloadLength\n\t};\n};\n\n/***/ })\n/******/ ]);\n//# sourceMappingURL=547d89122bd64c6d4724.worker.js.map", null);
 };
 
 /***/ }),
@@ -1687,4 +1712,4 @@ exports.default = function () {
 /***/ })
 /******/ ]);
 });
-//# sourceMappingURL=static.2c5bc1d9.js.map
+//# sourceMappingURL=static.e14e5ac8.js.map

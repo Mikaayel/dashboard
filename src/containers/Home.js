@@ -1,30 +1,44 @@
 import React, { Component } from 'react';
 import { withSiteData } from 'react-static';
 
-// import worker from ''
-
 import Worker from '../workers/webworkerScripts/main.worker';
-// import WebWorker from '../workers/WebWorker';
 
 class Home extends Component {
 	constructor(props) {
 		super(props);
-		if (window.Worker) {
-			console.log('worker supported');
-		}
+		this.state = {
+			average: 0
+		};
+		this.calculateAverage = this.calculateAverage.bind(this);
 	}
-
 	componentDidMount() {
-		const worker = new Worker();
-		worker.postMessage({a: 1});
-		// this.worker = new WebWorker(worker);
-		// this.worker.postMessage('hello');
+		if (window.Worker) {
+			this.worker = new Worker();
+			this.worker.addEventListener('message', (event) => {
+				console.log('return event', event);
+				this.setState({
+					[event.data.message]: event.data.payload
+				});
+			});
+		}
 	};
-
+	calculateAverage() {
+		this.worker.postMessage({
+			message: 'average',
+			payload: [10, 20, 30, 40, 50]
+		});
+	}
 	render() {
 		return (
 			<div>
 				<h1>Home</h1>
+				<button
+					onClick={this.calculateAverage}
+					type="button"
+				>
+				Average
+				</button>
+				<p>{this.state.average}</p>
 			</div>
 		);
 	}

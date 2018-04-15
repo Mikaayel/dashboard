@@ -1,8 +1,10 @@
 import React, { Component } from 'react';
 import { withSiteData } from 'react-static';
 
-import worker from '../workers/workerScripts/main';
-import WebWorker from '../workers/WebWorker';
+// import worker from ''
+
+import Worker from '../workers/webworkerScripts/main.worker';
+// import WebWorker from '../workers/WebWorker';
 
 class Home extends Component {
 	constructor(props) {
@@ -13,8 +15,10 @@ class Home extends Component {
 	}
 
 	componentDidMount() {
-		this.worker = new WebWorker(worker);
-		this.worker.postMessage('hello');
+		const worker = new Worker();
+		worker.postMessage({a: 1});
+		// this.worker = new WebWorker(worker);
+		// this.worker.postMessage('hello');
 	};
 
 	render() {

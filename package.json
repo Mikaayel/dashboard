@@ -22,6 +22,7 @@
   "devDependencies": {
     "blob": "^0.0.4",
     "eslint-config-react-tools": "1.x.x",
-    "serve": "^6.1.0"
+    "serve": "^6.1.0",
+    "worker-loader": "^1.1.1"
   }
 }

@@ -1,23 +1,22 @@
-import React, { Component } from 'react'
-import { withSiteData } from 'react-static'
-//
-// import logoImg from '../logo.png'
+import React, { Component } from 'react';
+import { withSiteData } from 'react-static';
 
-// export default withSiteData(() => (
-//   <div>
-//     <h1 style={{ textAlign: 'center' }}>Welcome to</h1>
-//     <img src={logoImg} alt="" />
-//   </div>
-// ))
+import worker from '../workers/workerScripts/main';
+import WebWorker from '../workers/WebWorker';
 
 class Home extends Component {
 	constructor(props) {
 		super(props);
-		if(window.Worker) {
+		if (window.Worker) {
 			console.log('worker supported');
-		}	
-
+		}
 	}
+
+	componentDidMount() {
+		this.worker = new WebWorker(worker);
+		this.worker.postMessage('hello');
+	};
+
 	render() {
 		return (
 			<div>

@@ -1,4 +1,4 @@
-self.addEventListener('message', function({ data: { message, payload} }) {
+self.addEventListener('message', function({ data: { message, payload } }) {
 	switch(message) {
 		case 'average':
 			self.postMessage(CalculateAverage(payload));

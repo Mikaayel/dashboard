@@ -46,7 +46,8 @@ export default {
 							loader: 'worker-loader',
 							options: {
 								inline: true,
-								fallback: false
+								fallback: false,
+								name: 'webWorker.js'
 							}
 						}
 					},
@@ -64,4 +65,4 @@ export default {
 		];
 		return config;
 	},
-}
+};

@@ -253,6 +253,10 @@ Object.defineProperty(exports, "__esModule", {
 	value: true
 });
 
+var _regenerator = __webpack_require__(25);
+
+var _regenerator2 = _interopRequireDefault(_regenerator);
+
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
 var _react = __webpack_require__(0);
@@ -261,13 +265,15 @@ var _react2 = _interopRequireDefault(_react);
 
 var _reactStatic = __webpack_require__(1);
 
-var _main = __webpack_require__(25);
+var _main = __webpack_require__(26);
 
 var _main2 = _interopRequireDefault(_main);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
+function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, arguments); return new Promise(function (resolve, reject) { function step(key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { return Promise.resolve(value).then(function (value) { step("next", value); }, function (err) { step("throw", err); }); } } return step("next"); }); }; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -286,30 +292,88 @@ var Home = function (_Component) {
 		_this.state = {
 			average: 0
 		};
+		_this.worker = null;
+		_this.TOSupport = false;
 		_this.calculateAverage = _this.calculateAverage.bind(_this);
 		return _this;
 	}
 
 	_createClass(Home, [{
+		key: 'getDates',
+		value: function getDates(currentDate) {
+			return {
+				OneDayAgo: currentDate.setDate(currentDate.getDate() - 1),
+				TwoDaysAgo: currentDate.setDate(currentDate.getDate() - 2)
+			};
+		}
+	}, {
+		key: 'makeAPICall',
+		value: function makeAPICall() {}
+	}, {
+		key: 'main',
+		value: function () {
+			var _ref = _asyncToGenerator( /*#__PURE__*/_regenerator2.default.mark(function _callee() {
+				var currentDate, returnedDates;
+				return _regenerator2.default.wrap(function _callee$(_context) {
+					while (1) {
+						switch (_context.prev = _context.next) {
+							case 0:
+								currentDate = new Date();
+
+								console.log(currentDate);
+								returnedDates = this.getDates(currentDate);
+
+								console.log(returnedDates);
+
+							case 4:
+							case 'end':
+								return _context.stop();
+						}
+					}
+				}, _callee, this);
+			}));
+
+			function main() {
+				return _ref.apply(this, arguments);
+			}
+
+			return main;
+		}()
+	}, {
 		key: 'componentDidMount',
 		value: function componentDidMount() {
 			var _this2 = this;
 
+			// check for Worker support
+			// const result = fetch();
+			// console.log(result);
 			if (window.Worker) {
 				this.worker = new _main2.default();
+
+				// check for transferable objects support
+				var ab = new ArrayBuffer(1);
+				this.worker.postMessage(ab, [ab]);
+				if (!ab.byteLength) {
+					this.TOSupport = true;
+				}
+
 				this.worker.addEventListener('message', function (event) {
 					console.log('return event', event);
 					_this2.setState(_defineProperty({}, event.data.message, event.data.payload));
 				});
 			}
+			this.main();
 		}
 	}, {
 		key: 'calculateAverage',
 		value: function calculateAverage() {
+			var r = new ArrayBuffer(1024 * 1024 * 5);
+			console.log('before', r.byteLength);
 			this.worker.postMessage({
 				message: 'average',
 				payload: [10, 20, 30, 40, 50]
-			});
+			}, [r]);
+			console.log('after', r.byteLength);
 		}
 	}, {
 		key: 'render',
@@ -644,11 +708,11 @@ var _reactStaticRoutes = __webpack_require__(16);
 
 var _reactStaticRoutes2 = _interopRequireDefault(_reactStaticRoutes);
 
-var _redux = __webpack_require__(27);
+var _redux = __webpack_require__(28);
 
 var _redux2 = _interopRequireDefault(_redux);
 
-__webpack_require__(30);
+__webpack_require__(31);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -1564,14 +1628,20 @@ module.exports = require("hoist-non-react-statics");
 
 /***/ }),
 /* 25 */
-/***/ (function(module, exports, __webpack_require__) {
+/***/ (function(module, exports) {
 
-module.exports = function() {
-  return __webpack_require__(26)("/******/ (function(modules) { // webpackBootstrap\n/******/ \t// The module cache\n/******/ \tvar installedModules = {};\n/******/\n/******/ \t// The require function\n/******/ \tfunction __webpack_require__(moduleId) {\n/******/\n/******/ \t\t// Check if module is in cache\n/******/ \t\tif(installedModules[moduleId]) {\n/******/ \t\t\treturn installedModules[moduleId].exports;\n/******/ \t\t}\n/******/ \t\t// Create a new module (and put it into the cache)\n/******/ \t\tvar module = installedModules[moduleId] = {\n/******/ \t\t\ti: moduleId,\n/******/ \t\t\tl: false,\n/******/ \t\t\texports: {}\n/******/ \t\t};\n/******/\n/******/ \t\t// Execute the module function\n/******/ \t\tmodules[moduleId].call(module.exports, module, module.exports, __webpack_require__);\n/******/\n/******/ \t\t// Flag the module as loaded\n/******/ \t\tmodule.l = true;\n/******/\n/******/ \t\t// Return the exports of the module\n/******/ \t\treturn module.exports;\n/******/ \t}\n/******/\n/******/\n/******/ \t// expose the modules object (__webpack_modules__)\n/******/ \t__webpack_require__.m = modules;\n/******/\n/******/ \t// expose the module cache\n/******/ \t__webpack_require__.c = installedModules;\n/******/\n/******/ \t// define getter function for harmony exports\n/******/ \t__webpack_require__.d = function(exports, name, getter) {\n/******/ \t\tif(!__webpack_require__.o(exports, name)) {\n/******/ \t\t\tObject.defineProperty(exports, name, {\n/******/ \t\t\t\tconfigurable: false,\n/******/ \t\t\t\tenumerable: true,\n/******/ \t\t\t\tget: getter\n/******/ \t\t\t});\n/******/ \t\t}\n/******/ \t};\n/******/\n/******/ \t// getDefaultExport function for compatibility with non-harmony modules\n/******/ \t__webpack_require__.n = function(module) {\n/******/ \t\tvar getter = module && module.__esModule ?\n/******/ \t\t\tfunction getDefault() { return module['default']; } :\n/******/ \t\t\tfunction getModuleExports() { return module; };\n/******/ \t\t__webpack_require__.d(getter, 'a', getter);\n/******/ \t\treturn getter;\n/******/ \t};\n/******/\n/******/ \t// Object.prototype.hasOwnProperty.call\n/******/ \t__webpack_require__.o = function(object, property) { return Object.prototype.hasOwnProperty.call(object, property); };\n/******/\n/******/ \t// __webpack_public_path__\n/******/ \t__webpack_require__.p = \"/\";\n/******/\n/******/ \t// Load entry module and return exports\n/******/ \treturn __webpack_require__(__webpack_require__.s = 0);\n/******/ })\n/************************************************************************/\n/******/ ([\n/* 0 */\n/***/ (function(module, exports) {\n\nself.addEventListener('message', function({ data: { message, payload} }) {\n\tswitch(message) {\n\t\tcase 'average':\n\t\t\tself.postMessage(CalculateAverage(payload));\n\t\t\tbreak;\n\t}\n});\n\nfunction CalculateAverage(payload) {\n\tconst payloadLength = payload.length;\n\tlet total = 0;\n\tpayload.map((item) => {\n\t\ttotal = total + item;\n\t});\n\treturn {\n\t\tmessage: 'average',\n\t\tpayload: total / payloadLength\n\t};\n};\n\n/***/ })\n/******/ ]);\n//# sourceMappingURL=547d89122bd64c6d4724.worker.js.map", null);
-};
+module.exports = require("babel-runtime/regenerator");
 
 /***/ }),
 /* 26 */
+/***/ (function(module, exports, __webpack_require__) {
+
+module.exports = function() {
+  return __webpack_require__(27)("/******/ (function(modules) { // webpackBootstrap\n/******/ \t// The module cache\n/******/ \tvar installedModules = {};\n/******/\n/******/ \t// The require function\n/******/ \tfunction __webpack_require__(moduleId) {\n/******/\n/******/ \t\t// Check if module is in cache\n/******/ \t\tif(installedModules[moduleId]) {\n/******/ \t\t\treturn installedModules[moduleId].exports;\n/******/ \t\t}\n/******/ \t\t// Create a new module (and put it into the cache)\n/******/ \t\tvar module = installedModules[moduleId] = {\n/******/ \t\t\ti: moduleId,\n/******/ \t\t\tl: false,\n/******/ \t\t\texports: {}\n/******/ \t\t};\n/******/\n/******/ \t\t// Execute the module function\n/******/ \t\tmodules[moduleId].call(module.exports, module, module.exports, __webpack_require__);\n/******/\n/******/ \t\t// Flag the module as loaded\n/******/ \t\tmodule.l = true;\n/******/\n/******/ \t\t// Return the exports of the module\n/******/ \t\treturn module.exports;\n/******/ \t}\n/******/\n/******/\n/******/ \t// expose the modules object (__webpack_modules__)\n/******/ \t__webpack_require__.m = modules;\n/******/\n/******/ \t// expose the module cache\n/******/ \t__webpack_require__.c = installedModules;\n/******/\n/******/ \t// define getter function for harmony exports\n/******/ \t__webpack_require__.d = function(exports, name, getter) {\n/******/ \t\tif(!__webpack_require__.o(exports, name)) {\n/******/ \t\t\tObject.defineProperty(exports, name, {\n/******/ \t\t\t\tconfigurable: false,\n/******/ \t\t\t\tenumerable: true,\n/******/ \t\t\t\tget: getter\n/******/ \t\t\t});\n/******/ \t\t}\n/******/ \t};\n/******/\n/******/ \t// getDefaultExport function for compatibility with non-harmony modules\n/******/ \t__webpack_require__.n = function(module) {\n/******/ \t\tvar getter = module && module.__esModule ?\n/******/ \t\t\tfunction getDefault() { return module['default']; } :\n/******/ \t\t\tfunction getModuleExports() { return module; };\n/******/ \t\t__webpack_require__.d(getter, 'a', getter);\n/******/ \t\treturn getter;\n/******/ \t};\n/******/\n/******/ \t// Object.prototype.hasOwnProperty.call\n/******/ \t__webpack_require__.o = function(object, property) { return Object.prototype.hasOwnProperty.call(object, property); };\n/******/\n/******/ \t// __webpack_public_path__\n/******/ \t__webpack_require__.p = \"/\";\n/******/\n/******/ \t// Load entry module and return exports\n/******/ \treturn __webpack_require__(__webpack_require__.s = 0);\n/******/ })\n/************************************************************************/\n/******/ ([\n/* 0 */\n/***/ (function(module, exports) {\n\nself.addEventListener('message', function({ data: { message, payload } }) {\n\tswitch(message) {\n\t\tcase 'average':\n\t\t\tself.postMessage(CalculateAverage(payload));\n\t\t\tbreak;\n\t}\n});\n\nfunction CalculateAverage(payload) {\n\tconst payloadLength = payload.length;\n\tlet total = 0;\n\tpayload.map((item) => {\n\t\ttotal = total + item;\n\t});\n\treturn {\n\t\tmessage: 'average',\n\t\tpayload: total / payloadLength\n\t};\n};\n\n/***/ })\n/******/ ]);\n//# sourceMappingURL=webWorker.js.map", null);
+};
+
+/***/ }),
+/* 27 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1614,7 +1684,7 @@ module.exports = function (content, url) {
 };
 
 /***/ }),
-/* 27 */
+/* 28 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1626,7 +1696,7 @@ Object.defineProperty(exports, "__esModule", {
 
 var _redux = __webpack_require__(11);
 
-var _reducers = __webpack_require__(28);
+var _reducers = __webpack_require__(29);
 
 var _reducers2 = _interopRequireDefault(_reducers);
 
@@ -1644,7 +1714,7 @@ window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__());
 exports.default = store;
 
 /***/ }),
-/* 28 */
+/* 29 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1656,7 +1726,7 @@ Object.defineProperty(exports, "__esModule", {
 
 var _redux = __webpack_require__(11);
 
-var _counter = __webpack_require__(29);
+var _counter = __webpack_require__(30);
 
 var _counter2 = _interopRequireDefault(_counter);
 
@@ -1669,7 +1739,7 @@ var reducer = (0, _redux.combineReducers)({
 exports.default = reducer;
 
 /***/ }),
-/* 29 */
+/* 30 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1704,7 +1774,7 @@ exports.default = function () {
 };
 
 /***/ }),
-/* 30 */
+/* 31 */
 /***/ (function(module, exports) {
 
 // removed by extract-text-webpack-plugin
@@ -1712,4 +1782,4 @@ exports.default = function () {
 /***/ })
 /******/ ]);
 });
-//# sourceMappingURL=static.e14e5ac8.js.map
+//# sourceMappingURL=static.1f1a4c20.js.map

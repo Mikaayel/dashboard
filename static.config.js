@@ -1,5 +1,9 @@
 import axios from 'axios';
 
+import dotenv from 'dotenv';
+dotenv.config();
+// require('dotenv').config();
+
 export default {
 	getSiteData: () => ({
 		title: 'React Static',
@@ -35,9 +39,14 @@ export default {
 			},
 		];
 	},
+	devServer: {
+		port: 8080
+	},
 	webpack: (config, { defaultLoaders }) => {
+		config.node = {
+			fs: 'empty'
+		},
 		config.module.rules = [
-			
 			{
 				oneOf: [
 					{
@@ -55,13 +64,13 @@ export default {
 						test: /\.json$/,
 						use: [{ loader: 'json-loader' }],
 					},
-					
+
 					defaultLoaders.jsLoader,
 					defaultLoaders.cssLoader,
 					defaultLoaders.fileLoader,
 				],
 			},
-			
+
 		];
 		return config;
 	},

@@ -70,7 +70,7 @@ return /******/ (function(modules) { // webpackBootstrap
 /******/ 	__webpack_require__.p = "/";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 12);
+/******/ 	return __webpack_require__(__webpack_require__.s = 13);
 /******/ })
 /************************************************************************/
 /******/ ([
@@ -253,7 +253,7 @@ Object.defineProperty(exports, "__esModule", {
 	value: true
 });
 
-var _regenerator = __webpack_require__(25);
+var _regenerator = __webpack_require__(7);
 
 var _regenerator2 = _interopRequireDefault(_regenerator);
 
@@ -268,6 +268,8 @@ var _reactStatic = __webpack_require__(1);
 var _main = __webpack_require__(26);
 
 var _main2 = _interopRequireDefault(_main);
+
+var _Logic = __webpack_require__(28);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -299,33 +301,25 @@ var Home = function (_Component) {
 	}
 
 	_createClass(Home, [{
-		key: 'getDates',
-		value: function getDates(currentDate) {
-			return {
-				OneDayAgo: currentDate.setDate(currentDate.getDate() - 1),
-				TwoDaysAgo: currentDate.setDate(currentDate.getDate() - 2)
-			};
-		}
-	}, {
-		key: 'makeAPICall',
-		value: function makeAPICall() {}
-	}, {
 		key: 'main',
 		value: function () {
 			var _ref = _asyncToGenerator( /*#__PURE__*/_regenerator2.default.mark(function _callee() {
-				var currentDate, returnedDates;
+				var currentDate, returnedDates, response;
 				return _regenerator2.default.wrap(function _callee$(_context) {
 					while (1) {
 						switch (_context.prev = _context.next) {
 							case 0:
 								currentDate = new Date();
-
-								console.log(currentDate);
-								returnedDates = this.getDates(currentDate);
-
-								console.log(returnedDates);
+								returnedDates = (0, _Logic.getDates)(currentDate);
+								_context.next = 4;
+								return (0, _Logic.makeAPICall)(returnedDates);
 
 							case 4:
+								response = _context.sent;
+
+								console.log(response);
+
+							case 6:
 							case 'end':
 								return _context.stop();
 						}
@@ -345,8 +339,6 @@ var Home = function (_Component) {
 			var _this2 = this;
 
 			// check for Worker support
-			// const result = fetch();
-			// console.log(result);
 			if (window.Worker) {
 				this.worker = new _main2.default();
 
@@ -410,6 +402,12 @@ exports.default = (0, _reactStatic.withSiteData)(Home);
 
 /***/ }),
 /* 7 */
+/***/ (function(module, exports) {
+
+module.exports = require("babel-runtime/regenerator");
+
+/***/ }),
+/* 8 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -501,7 +499,7 @@ var About = function About() {
 exports.default = About;
 
 /***/ }),
-/* 8 */
+/* 9 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -547,7 +545,7 @@ exports.default = (0, _reactStatic.withRouteData)(function (_ref) {
 });
 
 /***/ }),
-/* 9 */
+/* 10 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -598,7 +596,7 @@ exports.default = (0, _reactStatic.withRouteData)(function (_ref) {
 });
 
 /***/ }),
-/* 10 */
+/* 11 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -629,31 +627,31 @@ exports.default = function () {
 };
 
 /***/ }),
-/* 11 */
+/* 12 */
 /***/ (function(module, exports) {
 
 module.exports = require("redux");
 
 /***/ }),
-/* 12 */
+/* 13 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
 Object.defineProperty(exports, "__esModule", {
-  value: true
+	value: true
 });
 
 var _react = __webpack_require__(0);
 
 var _react2 = _interopRequireDefault(_react);
 
-var _reactDom = __webpack_require__(13);
+var _reactDom = __webpack_require__(14);
 
 var _reactDom2 = _interopRequireDefault(_reactDom);
 
-var _App = __webpack_require__(14);
+var _App = __webpack_require__(15);
 
 var _App2 = _interopRequireDefault(_App);
 
@@ -668,30 +666,30 @@ exports.default = _App2.default;
 // Your top level component
 
 if (typeof document !== 'undefined') {
-  var renderMethod =  false ? _reactDom2.default.render : _reactDom2.default.hydrate || _reactDom2.default.render;
-  var render = function render(Comp) {
-    renderMethod(_react2.default.createElement(Comp, null), document.getElementById('root'));
-  };
+	var renderMethod =  false ? _reactDom2.default.render : _reactDom2.default.hydrate || _reactDom2.default.render;
+	var render = function render(Comp) {
+		renderMethod(_react2.default.createElement(Comp, null), document.getElementById('root'));
+	};
 
-  // Render!
-  render(_App2.default);
-}
+	// Render!
+	render(_App2.default);
+};
 
 /***/ }),
-/* 13 */
+/* 14 */
 /***/ (function(module, exports) {
 
 module.exports = require("react-dom");
 
 /***/ }),
-/* 14 */
+/* 15 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 /* WEBPACK VAR INJECTION */(function(module) {
 
 Object.defineProperty(exports, "__esModule", {
-  value: true
+	value: true
 });
 
 var _react = __webpack_require__(0);
@@ -702,71 +700,71 @@ var _reactStatic = __webpack_require__(1);
 
 var _reactRedux = __webpack_require__(3);
 
-var _reactHotLoader = __webpack_require__(15);
+var _reactHotLoader = __webpack_require__(16);
 
-var _reactStaticRoutes = __webpack_require__(16);
+var _reactStaticRoutes = __webpack_require__(17);
 
 var _reactStaticRoutes2 = _interopRequireDefault(_reactStaticRoutes);
 
-var _redux = __webpack_require__(28);
+var _redux = __webpack_require__(29);
 
 var _redux2 = _interopRequireDefault(_redux);
 
-__webpack_require__(31);
+__webpack_require__(32);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 //
 var App = function App() {
-  return _react2.default.createElement(
-    _reactRedux.Provider,
-    { store: _redux2.default },
-    _react2.default.createElement(
-      _reactStatic.Router,
-      null,
-      _react2.default.createElement(
-        'div',
-        null,
-        _react2.default.createElement(
-          'nav',
-          null,
-          _react2.default.createElement(
-            _reactStatic.Link,
-            { to: '/' },
-            'Home'
-          ),
-          _react2.default.createElement(
-            _reactStatic.Link,
-            { to: '/about' },
-            'About'
-          ),
-          _react2.default.createElement(
-            _reactStatic.Link,
-            { to: '/blog' },
-            'Blog'
-          )
-        ),
-        _react2.default.createElement(
-          'div',
-          { className: 'content' },
-          _react2.default.createElement(_reactStaticRoutes2.default, null)
-        )
-      )
-    )
-  );
+	return _react2.default.createElement(
+		_reactRedux.Provider,
+		{ store: _redux2.default },
+		_react2.default.createElement(
+			_reactStatic.Router,
+			null,
+			_react2.default.createElement(
+				'div',
+				null,
+				_react2.default.createElement(
+					'nav',
+					null,
+					_react2.default.createElement(
+						_reactStatic.Link,
+						{ to: '/' },
+						'Home'
+					),
+					_react2.default.createElement(
+						_reactStatic.Link,
+						{ to: '/about' },
+						'About'
+					),
+					_react2.default.createElement(
+						_reactStatic.Link,
+						{ to: '/blog' },
+						'Blog'
+					)
+				),
+				_react2.default.createElement(
+					'div',
+					{ className: 'content' },
+					_react2.default.createElement(_reactStaticRoutes2.default, null)
+				)
+			)
+		)
+	);
 };
 
 exports.default = (0, _reactHotLoader.hot)(module)(App);
 /* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(2)(module)))
 
 /***/ }),
-/* 15 */
+/* 16 */
 /***/ (function(module, exports) {
 
 module.exports = require("react-hot-loader");
 
 /***/ }),
-/* 16 */
+/* 17 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -776,15 +774,15 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
-var _path2 = __webpack_require__(17);
+var _path2 = __webpack_require__(18);
 
 var _path3 = _interopRequireDefault(_path2);
 
-var _importCss2 = __webpack_require__(18);
+var _importCss2 = __webpack_require__(19);
 
 var _importCss3 = _interopRequireDefault(_importCss2);
 
-var _universalImport2 = __webpack_require__(19);
+var _universalImport2 = __webpack_require__(20);
 
 var _universalImport3 = _interopRequireDefault(_universalImport2);
 
@@ -796,9 +794,9 @@ var _react = __webpack_require__(0);
 
 var _react2 = _interopRequireDefault(_react);
 
-var _reactRouterDom = __webpack_require__(20);
+var _reactRouterDom = __webpack_require__(21);
 
-var _reactUniversalComponent = __webpack_require__(21);
+var _reactUniversalComponent = __webpack_require__(22);
 
 var _reactUniversalComponent2 = _interopRequireDefault(_reactUniversalComponent);
 
@@ -852,7 +850,7 @@ var t_1 = (0, _reactUniversalComponent2.default)((0, _universalImport3.default)(
   id: '../src/containers/About',
   file: '/Users/mika/Dropbox/projects/dashboard/dist/react-static-routes.js',
   load: function load() {
-    return Promise.all([new Promise(function(resolve) { resolve(); }).then(__webpack_require__.bind(null, 7)), (0, _importCss3.default)('src/containers/About', {
+    return Promise.all([new Promise(function(resolve) { resolve(); }).then(__webpack_require__.bind(null, 8)), (0, _importCss3.default)('src/containers/About', {
       disableWarnings: true
     })]).then(function (proms) {
       return proms[0];
@@ -862,7 +860,7 @@ var t_1 = (0, _reactUniversalComponent2.default)((0, _universalImport3.default)(
     return _path3.default.join(__dirname, '../src/containers/About');
   },
   resolve: function resolve() {
-    return /*require.resolve*/(7);
+    return /*require.resolve*/(8);
   },
   chunkName: function chunkName() {
     return 'src/containers/About';
@@ -872,7 +870,7 @@ var t_2 = (0, _reactUniversalComponent2.default)((0, _universalImport3.default)(
   id: '../src/containers/Post',
   file: '/Users/mika/Dropbox/projects/dashboard/dist/react-static-routes.js',
   load: function load() {
-    return Promise.all([new Promise(function(resolve) { resolve(); }).then(__webpack_require__.bind(null, 8)), (0, _importCss3.default)('src/containers/Post', {
+    return Promise.all([new Promise(function(resolve) { resolve(); }).then(__webpack_require__.bind(null, 9)), (0, _importCss3.default)('src/containers/Post', {
       disableWarnings: true
     })]).then(function (proms) {
       return proms[0];
@@ -882,7 +880,7 @@ var t_2 = (0, _reactUniversalComponent2.default)((0, _universalImport3.default)(
     return _path3.default.join(__dirname, '../src/containers/Post');
   },
   resolve: function resolve() {
-    return /*require.resolve*/(8);
+    return /*require.resolve*/(9);
   },
   chunkName: function chunkName() {
     return 'src/containers/Post';
@@ -892,7 +890,7 @@ var t_3 = (0, _reactUniversalComponent2.default)((0, _universalImport3.default)(
   id: '../src/containers/Blog',
   file: '/Users/mika/Dropbox/projects/dashboard/dist/react-static-routes.js',
   load: function load() {
-    return Promise.all([new Promise(function(resolve) { resolve(); }).then(__webpack_require__.bind(null, 9)), (0, _importCss3.default)('src/containers/Blog', {
+    return Promise.all([new Promise(function(resolve) { resolve(); }).then(__webpack_require__.bind(null, 10)), (0, _importCss3.default)('src/containers/Blog', {
       disableWarnings: true
     })]).then(function (proms) {
       return proms[0];
@@ -902,7 +900,7 @@ var t_3 = (0, _reactUniversalComponent2.default)((0, _universalImport3.default)(
     return _path3.default.join(__dirname, '../src/containers/Blog');
   },
   resolve: function resolve() {
-    return /*require.resolve*/(9);
+    return /*require.resolve*/(10);
   },
   chunkName: function chunkName() {
     return 'src/containers/Blog';
@@ -912,7 +910,7 @@ var t_4 = (0, _reactUniversalComponent2.default)((0, _universalImport3.default)(
   id: '../src/containers/404',
   file: '/Users/mika/Dropbox/projects/dashboard/dist/react-static-routes.js',
   load: function load() {
-    return Promise.all([new Promise(function(resolve) { resolve(); }).then(__webpack_require__.bind(null, 10)), (0, _importCss3.default)('src/containers/404', {
+    return Promise.all([new Promise(function(resolve) { resolve(); }).then(__webpack_require__.bind(null, 11)), (0, _importCss3.default)('src/containers/404', {
       disableWarnings: true
     })]).then(function (proms) {
       return proms[0];
@@ -922,7 +920,7 @@ var t_4 = (0, _reactUniversalComponent2.default)((0, _universalImport3.default)(
     return _path3.default.join(__dirname, '../src/containers/404');
   },
   resolve: function resolve() {
-    return /*require.resolve*/(10);
+    return /*require.resolve*/(11);
   },
   chunkName: function chunkName() {
     return 'src/containers/404';
@@ -1009,31 +1007,31 @@ exports.default = Routes;
 /* WEBPACK VAR INJECTION */}.call(exports, "/"))
 
 /***/ }),
-/* 17 */
+/* 18 */
 /***/ (function(module, exports) {
 
 module.exports = require("path");
 
 /***/ }),
-/* 18 */
+/* 19 */
 /***/ (function(module, exports) {
 
 module.exports = require("babel-plugin-universal-import/importCss");
 
 /***/ }),
-/* 19 */
+/* 20 */
 /***/ (function(module, exports) {
 
 module.exports = require("babel-plugin-universal-import/universalImport");
 
 /***/ }),
-/* 20 */
+/* 21 */
 /***/ (function(module, exports) {
 
 module.exports = require("react-router-dom");
 
 /***/ }),
-/* 21 */
+/* 22 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1048,7 +1046,7 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-var _requireUniversalModule = __webpack_require__(22);
+var _requireUniversalModule = __webpack_require__(23);
 
 Object.defineProperty(exports, 'CHUNK_NAMES', {
   enumerable: true,
@@ -1063,7 +1061,7 @@ Object.defineProperty(exports, 'MODULE_IDS', {
   }
 });
 
-var _reportChunks = __webpack_require__(23);
+var _reportChunks = __webpack_require__(24);
 
 Object.defineProperty(exports, 'ReportChunks', {
   enumerable: true,
@@ -1080,7 +1078,7 @@ var _propTypes = __webpack_require__(5);
 
 var _propTypes2 = _interopRequireDefault(_propTypes);
 
-var _hoistNonReactStatics = __webpack_require__(24);
+var _hoistNonReactStatics = __webpack_require__(25);
 
 var _hoistNonReactStatics2 = _interopRequireDefault(_hoistNonReactStatics);
 
@@ -1376,7 +1374,7 @@ exports.default = universal;
 /* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(2)(module)))
 
 /***/ }),
-/* 22 */
+/* 23 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1558,7 +1556,7 @@ var getConfig = function getConfig(isDynamic, universalConfig, options, props) {
 };
 
 /***/ }),
-/* 23 */
+/* 24 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1621,16 +1619,10 @@ ReportChunks.childContextTypes = {
 exports.default = ReportChunks;
 
 /***/ }),
-/* 24 */
-/***/ (function(module, exports) {
-
-module.exports = require("hoist-non-react-statics");
-
-/***/ }),
 /* 25 */
 /***/ (function(module, exports) {
 
-module.exports = require("babel-runtime/regenerator");
+module.exports = require("hoist-non-react-statics");
 
 /***/ }),
 /* 26 */
@@ -1691,12 +1683,88 @@ module.exports = function (content, url) {
 
 
 Object.defineProperty(exports, "__esModule", {
+	value: true
+});
+exports.makeAPICall = undefined;
+
+var _regenerator = __webpack_require__(7);
+
+var _regenerator2 = _interopRequireDefault(_regenerator);
+
+var makeAPICall = exports.makeAPICall = function () {
+	var _ref = _asyncToGenerator( /*#__PURE__*/_regenerator2.default.mark(function _callee(_ref2) {
+		var oneDayAgo = _ref2.oneDayAgo,
+		    twoDaysAgo = _ref2.twoDaysAgo;
+		var response, data;
+		return _regenerator2.default.wrap(function _callee$(_context) {
+			while (1) {
+				switch (_context.prev = _context.next) {
+					case 0:
+						_context.next = 2;
+						return fetch('https://api.nasa.gov/neo/rest/v1/feed?start_date=' + formatDate(twoDaysAgo) + '&end_date=' + formatDate(oneDayAgo) + '&api_key=' + "XFVyTh99UZoZtTygdFRMUTPfsTeGxxDZJH9SMp9q");
+
+					case 2:
+						response = _context.sent;
+						_context.next = 5;
+						return response.json();
+
+					case 5:
+						data = _context.sent;
+						return _context.abrupt('return', data);
+
+					case 7:
+					case 'end':
+						return _context.stop();
+				}
+			}
+		}, _callee, this);
+	}));
+
+	return function makeAPICall(_x) {
+		return _ref.apply(this, arguments);
+	};
+}();
+
+exports.getDates = getDates;
+exports.formatDate = formatDate;
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, arguments); return new Promise(function (resolve, reject) { function step(key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { return Promise.resolve(value).then(function (value) { step("next", value); }, function (err) { step("throw", err); }); } } return step("next"); }); }; }
+
+function getDates(currentDate) {
+	return {
+		oneDayAgo: currentDate.setDate(currentDate.getDate() - 1),
+		twoDaysAgo: currentDate.setDate(currentDate.getDate() - 1)
+	};
+};
+
+function formatDate(date) {
+	var d = new Date(date);
+	var day = '' + d.getDate();
+	var month = '' + (d.getMonth() + 1);
+	var year = d.getFullYear();
+
+	if (month.length < 2) month = '0' + month;
+	if (day.length < 2) day = '0' + day;
+
+	return year + '-' + month + '-' + day;
+};
+
+/***/ }),
+/* 29 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
-var _redux = __webpack_require__(11);
+var _redux = __webpack_require__(12);
 
-var _reducers = __webpack_require__(29);
+var _reducers = __webpack_require__(30);
 
 var _reducers2 = _interopRequireDefault(_reducers);
 
@@ -1714,7 +1782,7 @@ window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__());
 exports.default = store;
 
 /***/ }),
-/* 29 */
+/* 30 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1724,9 +1792,9 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
-var _redux = __webpack_require__(11);
+var _redux = __webpack_require__(12);
 
-var _counter = __webpack_require__(30);
+var _counter = __webpack_require__(31);
 
 var _counter2 = _interopRequireDefault(_counter);
 
@@ -1739,7 +1807,7 @@ var reducer = (0, _redux.combineReducers)({
 exports.default = reducer;
 
 /***/ }),
-/* 30 */
+/* 31 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1774,7 +1842,7 @@ exports.default = function () {
 };
 
 /***/ }),
-/* 31 */
+/* 32 */
 /***/ (function(module, exports) {
 
 // removed by extract-text-webpack-plugin
@@ -1782,4 +1850,4 @@ exports.default = function () {
 /***/ })
 /******/ ]);
 });
-//# sourceMappingURL=static.1f1a4c20.js.map
+//# sourceMappingURL=static.39188629.js.map

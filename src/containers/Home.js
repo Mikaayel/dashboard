@@ -3,6 +3,8 @@ import { withSiteData } from 'react-static';
 
 import Worker from '../workers/webworkerScripts/main.worker';
 
+import { getDates, makeAPICall } from '../Logic';
+
 class Home extends Component {
 	constructor(props) {
 		super(props);
@@ -13,36 +15,26 @@ class Home extends Component {
 		this.TOSupport = false;
 		this.calculateAverage = this.calculateAverage.bind(this);
 	}
-	getDates(currentDate) {
-		return {
-			OneDayAgo: currentDate.setDate(currentDate.getDate() - 1),
-			TwoDaysAgo: currentDate.setDate(currentDate.getDate() - 2)
-		};
-	};
 
-	makeAPICall() {
-
-	}
 	async main() {
 		const currentDate = new Date();
-		console.log(currentDate);
-		const returnedDates = this.getDates(currentDate);
-		console.log(returnedDates);
+		const returnedDates = getDates(currentDate);
+		let response = await makeAPICall(returnedDates);
+		console.log(response);
 	}
+
 	componentDidMount() {
 		// check for Worker support
-		// const result = fetch();
-		// console.log(result);
 		if (window.Worker) {
 			this.worker = new Worker();
-			
+
 			// check for transferable objects support
 			const ab = new ArrayBuffer(1);
 			this.worker.postMessage(ab, [ab]);
-			if(!ab.byteLength) {
+			if (!ab.byteLength) {
 				this.TOSupport = true;
 			}
-			
+
 			this.worker.addEventListener('message', (event) => {
 				console.log('return event', event);
 				this.setState({
@@ -52,6 +44,7 @@ class Home extends Component {
 		}
 		this.main();
 	};
+
 	calculateAverage() {
 		const r = new ArrayBuffer(1024 * 1024 * 5);
 		console.log('before', r.byteLength);
@@ -61,6 +54,7 @@ class Home extends Component {
 		}, [r]);
 		console.log('after', r.byteLength);
 	}
+
 	render() {
 		return (
 			<div>
@@ -69,7 +63,7 @@ class Home extends Component {
 					onClick={this.calculateAverage}
 					type="button"
 				>
-				Average
+					Average
 				</button>
 				<p>{this.state.average}</p>
 			</div>

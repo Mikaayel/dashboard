@@ -1,19 +1,29 @@
 self.addEventListener('message', function({ data: { message, payload } }) {
 	switch(message) {
-		case 'average':
-			self.postMessage(CalculateAverage(payload));
+		case 'initial':
+			initial(payload);
+			break;
+		default:
 			break;
 	}
 });
 
-function CalculateAverage(payload) {
-	const payloadLength = payload.length;
-	let total = 0;
-	payload.map((item) => {
-		total = total + item;
+function initial({ near_earth_objects }) {
+	Object.entries(near_earth_objects).map((dayObject) => {
+		let result = sortByMeters(dayObject);
+		transferToMain({ payload: {[dayObject[0]]: result }});
 	});
-	return {
-		message: 'average',
-		payload: total / payloadLength
-	};
+}
+
+function sortByMeters(dayObject) {
+	return dayObject[1].sort(function(obj1, obj2) {
+		return obj1.estimated_diameter.meters.estimated_diameter_max - obj2.estimated_diameter.meters.estimated_diameter_max;
+	});
+}
+
+function transferToMain({ payload }) {
+	const buffer = new ArrayBuffer(1024 * 1024 * 5);
+	self.postMessage({
+		payload
+	}, [buffer]);
 };

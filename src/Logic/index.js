@@ -22,3 +22,11 @@ export async function makeAPICall({ oneDayAgo, twoDaysAgo }) {
 	const data = await response.json();
 	return data;
 }
+
+export function messageWebWorker({ message, payload }) {
+	const buffer = new ArrayBuffer(1024 * 1024 * 5);
+	this.worker.postMessage({
+		message,
+		payload
+	}, [buffer]);
+}

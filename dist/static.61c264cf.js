@@ -257,6 +257,8 @@ var _regenerator = __webpack_require__(7);
 
 var _regenerator2 = _interopRequireDefault(_regenerator);
 
+var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
 var _react = __webpack_require__(0);
@@ -269,11 +271,13 @@ var _main = __webpack_require__(26);
 
 var _main2 = _interopRequireDefault(_main);
 
-var _Logic = __webpack_require__(28);
+var _dataContainer = __webpack_require__(28);
+
+var _dataContainer2 = _interopRequireDefault(_dataContainer);
+
+var _Logic = __webpack_require__(29);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 
 function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, arguments); return new Promise(function (resolve, reject) { function step(key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { return Promise.resolve(value).then(function (value) { step("next", value); }, function (err) { step("throw", err); }); } } return step("next"); }); }; }
 
@@ -292,11 +296,17 @@ var Home = function (_Component) {
 		var _this = _possibleConstructorReturn(this, (Home.__proto__ || Object.getPrototypeOf(Home)).call(this, props));
 
 		_this.state = {
-			average: 0
+			average: 0,
+			data: undefined,
+			gpuAvailable: false,
+			offline: false,
+			gpuAcceleration: false,
+			webWorkerAvailable: false,
+			webWorkerAcceleration: false
 		};
 		_this.worker = null;
 		_this.TOSupport = false;
-		_this.calculateAverage = _this.calculateAverage.bind(_this);
+		_this.messageWebWorker = _Logic.messageWebWorker.bind(_this);
 		return _this;
 	}
 
@@ -317,7 +327,7 @@ var Home = function (_Component) {
 							case 4:
 								response = _context.sent;
 
-								console.log(response);
+								this.messageWebWorker({ message: 'initial', payload: response });
 
 							case 6:
 							case 'end':
@@ -338,34 +348,13 @@ var Home = function (_Component) {
 		value: function componentDidMount() {
 			var _this2 = this;
 
-			// check for Worker support
-			if (window.Worker) {
-				this.worker = new _main2.default();
-
-				// check for transferable objects support
-				var ab = new ArrayBuffer(1);
-				this.worker.postMessage(ab, [ab]);
-				if (!ab.byteLength) {
-					this.TOSupport = true;
-				}
-
-				this.worker.addEventListener('message', function (event) {
-					console.log('return event', event);
-					_this2.setState(_defineProperty({}, event.data.message, event.data.payload));
+			this.worker = new _main2.default();
+			this.worker.addEventListener('message', function (event) {
+				_this2.setState({
+					data: _extends({}, _this2.state.data, event.data.payload)
 				});
-			}
+			});
 			this.main();
-		}
-	}, {
-		key: 'calculateAverage',
-		value: function calculateAverage() {
-			var r = new ArrayBuffer(1024 * 1024 * 5);
-			console.log('before', r.byteLength);
-			this.worker.postMessage({
-				message: 'average',
-				payload: [10, 20, 30, 40, 50]
-			}, [r]);
-			console.log('after', r.byteLength);
 		}
 	}, {
 		key: 'render',
@@ -378,19 +367,7 @@ var Home = function (_Component) {
 					null,
 					'Home'
 				),
-				_react2.default.createElement(
-					'button',
-					{
-						onClick: this.calculateAverage,
-						type: 'button'
-					},
-					'Average'
-				),
-				_react2.default.createElement(
-					'p',
-					null,
-					this.state.average
-				)
+				_react2.default.createElement(_dataContainer2.default, { data: this.state.data })
 			);
 		}
 	}]);
@@ -706,11 +683,11 @@ var _reactStaticRoutes = __webpack_require__(17);
 
 var _reactStaticRoutes2 = _interopRequireDefault(_reactStaticRoutes);
 
-var _redux = __webpack_require__(29);
+var _redux = __webpack_require__(30);
 
 var _redux2 = _interopRequireDefault(_redux);
 
-__webpack_require__(32);
+__webpack_require__(33);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -1629,7 +1606,7 @@ module.exports = require("hoist-non-react-statics");
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports = function() {
-  return __webpack_require__(27)("/******/ (function(modules) { // webpackBootstrap\n/******/ \t// The module cache\n/******/ \tvar installedModules = {};\n/******/\n/******/ \t// The require function\n/******/ \tfunction __webpack_require__(moduleId) {\n/******/\n/******/ \t\t// Check if module is in cache\n/******/ \t\tif(installedModules[moduleId]) {\n/******/ \t\t\treturn installedModules[moduleId].exports;\n/******/ \t\t}\n/******/ \t\t// Create a new module (and put it into the cache)\n/******/ \t\tvar module = installedModules[moduleId] = {\n/******/ \t\t\ti: moduleId,\n/******/ \t\t\tl: false,\n/******/ \t\t\texports: {}\n/******/ \t\t};\n/******/\n/******/ \t\t// Execute the module function\n/******/ \t\tmodules[moduleId].call(module.exports, module, module.exports, __webpack_require__);\n/******/\n/******/ \t\t// Flag the module as loaded\n/******/ \t\tmodule.l = true;\n/******/\n/******/ \t\t// Return the exports of the module\n/******/ \t\treturn module.exports;\n/******/ \t}\n/******/\n/******/\n/******/ \t// expose the modules object (__webpack_modules__)\n/******/ \t__webpack_require__.m = modules;\n/******/\n/******/ \t// expose the module cache\n/******/ \t__webpack_require__.c = installedModules;\n/******/\n/******/ \t// define getter function for harmony exports\n/******/ \t__webpack_require__.d = function(exports, name, getter) {\n/******/ \t\tif(!__webpack_require__.o(exports, name)) {\n/******/ \t\t\tObject.defineProperty(exports, name, {\n/******/ \t\t\t\tconfigurable: false,\n/******/ \t\t\t\tenumerable: true,\n/******/ \t\t\t\tget: getter\n/******/ \t\t\t});\n/******/ \t\t}\n/******/ \t};\n/******/\n/******/ \t// getDefaultExport function for compatibility with non-harmony modules\n/******/ \t__webpack_require__.n = function(module) {\n/******/ \t\tvar getter = module && module.__esModule ?\n/******/ \t\t\tfunction getDefault() { return module['default']; } :\n/******/ \t\t\tfunction getModuleExports() { return module; };\n/******/ \t\t__webpack_require__.d(getter, 'a', getter);\n/******/ \t\treturn getter;\n/******/ \t};\n/******/\n/******/ \t// Object.prototype.hasOwnProperty.call\n/******/ \t__webpack_require__.o = function(object, property) { return Object.prototype.hasOwnProperty.call(object, property); };\n/******/\n/******/ \t// __webpack_public_path__\n/******/ \t__webpack_require__.p = \"/\";\n/******/\n/******/ \t// Load entry module and return exports\n/******/ \treturn __webpack_require__(__webpack_require__.s = 0);\n/******/ })\n/************************************************************************/\n/******/ ([\n/* 0 */\n/***/ (function(module, exports) {\n\nself.addEventListener('message', function({ data: { message, payload } }) {\n\tswitch(message) {\n\t\tcase 'average':\n\t\t\tself.postMessage(CalculateAverage(payload));\n\t\t\tbreak;\n\t}\n});\n\nfunction CalculateAverage(payload) {\n\tconst payloadLength = payload.length;\n\tlet total = 0;\n\tpayload.map((item) => {\n\t\ttotal = total + item;\n\t});\n\treturn {\n\t\tmessage: 'average',\n\t\tpayload: total / payloadLength\n\t};\n};\n\n/***/ })\n/******/ ]);\n//# sourceMappingURL=webWorker.js.map", null);
+  return __webpack_require__(27)("/******/ (function(modules) { // webpackBootstrap\n/******/ \t// The module cache\n/******/ \tvar installedModules = {};\n/******/\n/******/ \t// The require function\n/******/ \tfunction __webpack_require__(moduleId) {\n/******/\n/******/ \t\t// Check if module is in cache\n/******/ \t\tif(installedModules[moduleId]) {\n/******/ \t\t\treturn installedModules[moduleId].exports;\n/******/ \t\t}\n/******/ \t\t// Create a new module (and put it into the cache)\n/******/ \t\tvar module = installedModules[moduleId] = {\n/******/ \t\t\ti: moduleId,\n/******/ \t\t\tl: false,\n/******/ \t\t\texports: {}\n/******/ \t\t};\n/******/\n/******/ \t\t// Execute the module function\n/******/ \t\tmodules[moduleId].call(module.exports, module, module.exports, __webpack_require__);\n/******/\n/******/ \t\t// Flag the module as loaded\n/******/ \t\tmodule.l = true;\n/******/\n/******/ \t\t// Return the exports of the module\n/******/ \t\treturn module.exports;\n/******/ \t}\n/******/\n/******/\n/******/ \t// expose the modules object (__webpack_modules__)\n/******/ \t__webpack_require__.m = modules;\n/******/\n/******/ \t// expose the module cache\n/******/ \t__webpack_require__.c = installedModules;\n/******/\n/******/ \t// define getter function for harmony exports\n/******/ \t__webpack_require__.d = function(exports, name, getter) {\n/******/ \t\tif(!__webpack_require__.o(exports, name)) {\n/******/ \t\t\tObject.defineProperty(exports, name, {\n/******/ \t\t\t\tconfigurable: false,\n/******/ \t\t\t\tenumerable: true,\n/******/ \t\t\t\tget: getter\n/******/ \t\t\t});\n/******/ \t\t}\n/******/ \t};\n/******/\n/******/ \t// getDefaultExport function for compatibility with non-harmony modules\n/******/ \t__webpack_require__.n = function(module) {\n/******/ \t\tvar getter = module && module.__esModule ?\n/******/ \t\t\tfunction getDefault() { return module['default']; } :\n/******/ \t\t\tfunction getModuleExports() { return module; };\n/******/ \t\t__webpack_require__.d(getter, 'a', getter);\n/******/ \t\treturn getter;\n/******/ \t};\n/******/\n/******/ \t// Object.prototype.hasOwnProperty.call\n/******/ \t__webpack_require__.o = function(object, property) { return Object.prototype.hasOwnProperty.call(object, property); };\n/******/\n/******/ \t// __webpack_public_path__\n/******/ \t__webpack_require__.p = \"/\";\n/******/\n/******/ \t// Load entry module and return exports\n/******/ \treturn __webpack_require__(__webpack_require__.s = 0);\n/******/ })\n/************************************************************************/\n/******/ ([\n/* 0 */\n/***/ (function(module, exports) {\n\nself.addEventListener('message', function({ data: { message, payload } }) {\n\tswitch(message) {\n\t\tcase 'initial':\n\t\t\tinitial(payload);\n\t\t\tbreak;\n\t\tdefault:\n\t\t\tbreak;\n\t}\n});\n\nfunction initial({ near_earth_objects }) {\n\tObject.entries(near_earth_objects).map((dayObject) => {\n\t\tlet result = sortByMeters(dayObject);\n\t\ttransferToMain({ payload: {[dayObject[0]]: result }});\n\t});\n}\n\nfunction sortByMeters(dayObject) {\n\treturn dayObject[1].sort(function(obj1, obj2) {\n\t\treturn obj1.estimated_diameter.meters.estimated_diameter_max - obj2.estimated_diameter.meters.estimated_diameter_max;\n\t});\n}\n\nfunction transferToMain({ payload }) {\n\tconst buffer = new ArrayBuffer(1024 * 1024 * 5);\n\tself.postMessage({\n\t\tpayload\n\t}, [buffer]);\n};\n\n/***/ })\n/******/ ]);\n//# sourceMappingURL=webWorker.js.map", null);
 };
 
 /***/ }),
@@ -1685,6 +1662,60 @@ module.exports = function (content, url) {
 Object.defineProperty(exports, "__esModule", {
 	value: true
 });
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _react = __webpack_require__(0);
+
+var _react2 = _interopRequireDefault(_react);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var DataContainer = function (_Component) {
+	_inherits(DataContainer, _Component);
+
+	function DataContainer(props) {
+		_classCallCheck(this, DataContainer);
+
+		return _possibleConstructorReturn(this, (DataContainer.__proto__ || Object.getPrototypeOf(DataContainer)).call(this, props));
+	}
+
+	_createClass(DataContainer, [{
+		key: 'render',
+		value: function render() {
+			return _react2.default.createElement(
+				'div',
+				null,
+				_react2.default.createElement(
+					'p',
+					null,
+					'data container'
+				)
+			);
+		}
+	}]);
+
+	return DataContainer;
+}(_react.Component);
+
+exports.default = DataContainer;
+
+/***/ }),
+/* 29 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+	value: true
+});
 exports.makeAPICall = undefined;
 
 var _regenerator = __webpack_require__(7);
@@ -1727,6 +1758,7 @@ var makeAPICall = exports.makeAPICall = function () {
 
 exports.getDates = getDates;
 exports.formatDate = formatDate;
+exports.messageWebWorker = messageWebWorker;
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -1751,8 +1783,19 @@ function formatDate(date) {
 	return year + '-' + month + '-' + day;
 };
 
+function messageWebWorker(_ref3) {
+	var message = _ref3.message,
+	    payload = _ref3.payload;
+
+	var buffer = new ArrayBuffer(1024 * 1024 * 5);
+	this.worker.postMessage({
+		message: message,
+		payload: payload
+	}, [buffer]);
+}
+
 /***/ }),
-/* 29 */
+/* 30 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1764,7 +1807,7 @@ Object.defineProperty(exports, "__esModule", {
 
 var _redux = __webpack_require__(12);
 
-var _reducers = __webpack_require__(30);
+var _reducers = __webpack_require__(31);
 
 var _reducers2 = _interopRequireDefault(_reducers);
 
@@ -1782,7 +1825,7 @@ window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__());
 exports.default = store;
 
 /***/ }),
-/* 30 */
+/* 31 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1794,7 +1837,7 @@ Object.defineProperty(exports, "__esModule", {
 
 var _redux = __webpack_require__(12);
 
-var _counter = __webpack_require__(31);
+var _counter = __webpack_require__(32);
 
 var _counter2 = _interopRequireDefault(_counter);
 
@@ -1807,7 +1850,7 @@ var reducer = (0, _redux.combineReducers)({
 exports.default = reducer;
 
 /***/ }),
-/* 31 */
+/* 32 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1842,7 +1885,7 @@ exports.default = function () {
 };
 
 /***/ }),
-/* 32 */
+/* 33 */
 /***/ (function(module, exports) {
 
 // removed by extract-text-webpack-plugin
@@ -1850,4 +1893,4 @@ exports.default = function () {
 /***/ })
 /******/ ]);
 });
-//# sourceMappingURL=static.39188629.js.map
+//# sourceMappingURL=static.61c264cf.js.map

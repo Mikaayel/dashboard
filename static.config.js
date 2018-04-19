@@ -2,7 +2,6 @@ import axios from 'axios';
 
 import dotenv from 'dotenv';
 dotenv.config();
-// require('dotenv').config();
 
 export default {
 	getSiteData: () => ({

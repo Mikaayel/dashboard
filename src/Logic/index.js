@@ -21,7 +21,7 @@ export async function makeAPICall({ oneDayAgo, twoDaysAgo }) {
 	const response = await fetch(`https://api.nasa.gov/neo/rest/v1/feed?start_date=${formatDate(twoDaysAgo)}&end_date=${formatDate(oneDayAgo)}&api_key=${process.env.REACT_APP_NASA_API_KEY}`);
 	const data = await response.json();
 	return data;
-}
+};
 
 export function messageWebWorker({ message, payload }) {
 	const buffer = new ArrayBuffer(1024 * 1024 * 5);
@@ -29,4 +29,4 @@ export function messageWebWorker({ message, payload }) {
 		message,
 		payload
 	}, [buffer]);
-}
+};

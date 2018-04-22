@@ -1,4 +1,4 @@
-import axios from 'axios';
+// import axios from 'axios';
 
 import dotenv from 'dotenv';
 dotenv.config();
@@ -8,7 +8,7 @@ export default {
 		title: 'React Static',
 	}),
 	getRoutes: async () => {
-		const { data: posts } = await axios.get('https://jsonplaceholder.typicode.com/posts')
+		// const { data: posts } = await axios.get('https://jsonplaceholder.typicode.com/posts')
 		return [
 			{
 				path: '/',
@@ -18,20 +18,20 @@ export default {
 				path: '/about',
 				component: 'src/containers/About',
 			},
-			{
-				path: '/blog',
-				component: 'src/containers/Blog',
-				getData: () => ({
-					posts,
-				}),
-				children: posts.map(post => ({
-					path: `/post/${post.id}`,
-					component: 'src/containers/Post',
-					getData: () => ({
-						post,
-					}),
-				})),
-			},
+			// {
+			// 	path: '/blog',
+			// 	component: 'src/containers/Blog',
+			// 	getData: () => ({
+			// 		posts,
+			// 	}),
+			// 	children: posts.map(post => ({
+			// 		path: `/post/${post.id}`,
+			// 		component: 'src/containers/Post',
+			// 		getData: () => ({
+			// 			post,
+			// 		}),
+			// 	})),
+			// },
 			{
 				is404: true,
 				component: 'src/containers/404',
@@ -43,7 +43,8 @@ export default {
 	},
 	webpack: (config, { defaultLoaders }) => {
 		config.node = {
-			fs: 'empty'
+			fs: 'empty',
+			navigator: 'empty'
 		},
 		config.module.rules = [
 			{
@@ -55,7 +56,7 @@ export default {
 							options: {
 								inline: true,
 								fallback: false,
-								name: 'webWorker.js'
+								name: 'webWorker-[hash].js'
 							}
 						}
 					},

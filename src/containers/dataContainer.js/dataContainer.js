@@ -1,16 +1,12 @@
-import React, { Component } from 'react';
+import React from 'react';
 
-class DataContainer extends Component {
-	constructor(props) {
-		super(props);
-	}
-	render() {
-		return(
-			<div>
-				<p>data container</p>
-			</div>
-		);
-	}	
-}
+const DataContainer = ({ data }) => {
+	console.log(data);
+	return(
+		<div>
+			<p>data container</p>
+		</div>
+	);
+};
 
 export default DataContainer;

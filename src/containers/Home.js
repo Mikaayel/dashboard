@@ -4,6 +4,8 @@ import { withSiteData } from 'react-static';
 import Worker from '../workers/webworkerScripts/main.worker';
 
 import DataContainer from './data.js/dataContainer';
+import VisualisationContainer from './VisualisationContainer';
+
 
 import { getDates, makeAPICall, messageWebWorker } from '../Logic';
 
@@ -45,10 +47,12 @@ class Home extends Component {
 	};
 
 	render() {
+		const { data } = this.state;
 		return (
 			<div>
 				<h1>Near Earth Objects</h1>
-				<DataContainer data={this.state.data} />
+				<VisualisationContainer data={data} />
+				<DataContainer data={data} />
 			</div>
 		);
 	}

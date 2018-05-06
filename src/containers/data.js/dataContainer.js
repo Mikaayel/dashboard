@@ -22,7 +22,7 @@ class DataContainer extends Component {
 				{ this.renderDataGroup(data) }
 			</div>
 		);
-	}	
+	}
 }
 
 export default DataContainer;

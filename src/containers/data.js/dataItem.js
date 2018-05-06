@@ -1,7 +1,6 @@
 import React from 'react';
 
 const DataItem = ({ datum }) => {
-	console.log(datum);
 	const name = datum.name;
 	const diameter = datum.estimated_diameter.meters.estimated_diameter_max;
 	return (

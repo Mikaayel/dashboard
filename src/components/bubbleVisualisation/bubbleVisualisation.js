@@ -31,7 +31,7 @@ class BubbleVisualisation extends Component {
 			.attr('y', d => height - yScale(d.height))
 			.attr('width', 10)
 			.attr('height', (d) => { return d.height;})
-			.attr('fill', '#fe9922')
+			.attr('fill', d => d.hazard ? 'red' : '#fe9922')
 			.attr('stroke', '#fff');
 
 		select(node)

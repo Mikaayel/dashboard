@@ -1846,7 +1846,9 @@ var BubbleVisualisation = function (_Component) {
 				return height - yScale(d.height);
 			}).attr('width', 10).attr('height', function (d) {
 				return d.height;
-			}).attr('fill', '#fe9922').attr('stroke', '#fff');
+			}).attr('fill', function (d) {
+				return d.hazard ? 'red' : '#fe9922';
+			}).attr('stroke', '#fff');
 
 			(0, _d3Selection.select)(node).selectAll('rect').exit().remove();
 		}
@@ -2073,4 +2075,4 @@ exports.default = function () {
 /***/ })
 /******/ ]);
 });
-//# sourceMappingURL=static.7302650b.js.map
+//# sourceMappingURL=static.51cf1f1a.js.map

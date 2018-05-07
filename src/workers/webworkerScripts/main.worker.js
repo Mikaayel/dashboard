@@ -34,7 +34,3 @@ function transferToMain({ payload }) {
 		payload
 	}, [buffer]);
 };
-
-function filterHazardous() {
-
-}

@@ -1,7 +1,8 @@
-export function getDates(currentDate) {
+export function getDates({startDate, dateOffset}) {
+	// console.log(startDate, dateOffset);
 	return {
-		oneDayAgo: currentDate.setDate(currentDate.getDate() - 1),
-		twoDaysAgo: currentDate.setDate(currentDate.getDate() - 1)
+		oneDayAgo: startDate.setDate(startDate.getDate() - 1),
+		twoDaysAgo: startDate.setDate(startDate.getDate() - dateOffset)
 	};
 };
 

@@ -279,7 +279,7 @@ var _VisualisationContainer = __webpack_require__(29);
 
 var _VisualisationContainer2 = _interopRequireDefault(_VisualisationContainer);
 
-var _Logic = __webpack_require__(34);
+var _Logic = __webpack_require__(33);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -302,29 +302,29 @@ var Home = function (_Component) {
 		_this.state = {
 			average: 0,
 			data: undefined,
-			gpuAvailable: false,
-			offline: false,
-			gpuAcceleration: false,
-			webWorkerAvailable: false,
-			webWorkerAcceleration: false
+			dateOffset: 2
 		};
 		_this.worker = null;
 		_this.TOSupport = false;
 		_this.messageWebWorker = _Logic.messageWebWorker.bind(_this);
+		_this.handleClick = _this.handleClick.bind(_this);
 		return _this;
 	}
 
 	_createClass(Home, [{
 		key: 'main',
 		value: function () {
-			var _ref = _asyncToGenerator( /*#__PURE__*/_regenerator2.default.mark(function _callee() {
+			var _ref = _asyncToGenerator( /*#__PURE__*/_regenerator2.default.mark(function _callee(_ref2) {
+				var dateOffset = _ref2.dateOffset;
 				var currentDate, returnedDates, response;
 				return _regenerator2.default.wrap(function _callee$(_context) {
 					while (1) {
 						switch (_context.prev = _context.next) {
 							case 0:
 								currentDate = new Date();
-								returnedDates = (0, _Logic.getDates)(currentDate);
+								returnedDates = (0, _Logic.getDates)({ startDate: currentDate, dateOffset: dateOffset });
+								// console.log(returnedDates);
+
 								_context.next = 4;
 								return (0, _Logic.makeAPICall)(returnedDates);
 
@@ -341,7 +341,7 @@ var Home = function (_Component) {
 				}, _callee, this);
 			}));
 
-			function main() {
+			function main(_x) {
 				return _ref.apply(this, arguments);
 			}
 
@@ -358,16 +358,40 @@ var Home = function (_Component) {
 					data: _extends({}, _this2.state.data, event.data.payload)
 				});
 			});
-			this.main();
+			var dateOffset = this.state.dateOffset;
+
+			this.main({ dateOffset: dateOffset });
+		}
+	}, {
+		key: 'handleClick',
+		value: function handleClick(e) {
+			e.preventDefault();
+			this.main({ dateOffset: e.target.value });
 		}
 	}, {
 		key: 'render',
 		value: function render() {
 			var data = this.state.data;
+			// console.log(data);
 
 			return _react2.default.createElement(
 				'div',
 				null,
+				_react2.default.createElement(
+					'button',
+					{ onClick: this.handleClick, value: '1' },
+					'1 day'
+				),
+				_react2.default.createElement(
+					'button',
+					{ onClick: this.handleClick, value: '3' },
+					'3 day'
+				),
+				_react2.default.createElement(
+					'button',
+					{ onClick: this.handleClick, value: '7' },
+					'7 day'
+				),
 				_react2.default.createElement(
 					'h1',
 					null,
@@ -593,11 +617,11 @@ var _reactStaticRoutes = __webpack_require__(15);
 
 var _reactStaticRoutes2 = _interopRequireDefault(_reactStaticRoutes);
 
-var _redux = __webpack_require__(35);
+var _redux = __webpack_require__(34);
 
 var _redux2 = _interopRequireDefault(_redux);
 
-__webpack_require__(38);
+__webpack_require__(37);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -1471,7 +1495,7 @@ module.exports = require("hoist-non-react-statics");
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports = function() {
-  return __webpack_require__(25)("/******/ (function(modules) { // webpackBootstrap\n/******/ \t// The module cache\n/******/ \tvar installedModules = {};\n/******/\n/******/ \t// The require function\n/******/ \tfunction __webpack_require__(moduleId) {\n/******/\n/******/ \t\t// Check if module is in cache\n/******/ \t\tif(installedModules[moduleId]) {\n/******/ \t\t\treturn installedModules[moduleId].exports;\n/******/ \t\t}\n/******/ \t\t// Create a new module (and put it into the cache)\n/******/ \t\tvar module = installedModules[moduleId] = {\n/******/ \t\t\ti: moduleId,\n/******/ \t\t\tl: false,\n/******/ \t\t\texports: {}\n/******/ \t\t};\n/******/\n/******/ \t\t// Execute the module function\n/******/ \t\tmodules[moduleId].call(module.exports, module, module.exports, __webpack_require__);\n/******/\n/******/ \t\t// Flag the module as loaded\n/******/ \t\tmodule.l = true;\n/******/\n/******/ \t\t// Return the exports of the module\n/******/ \t\treturn module.exports;\n/******/ \t}\n/******/\n/******/\n/******/ \t// expose the modules object (__webpack_modules__)\n/******/ \t__webpack_require__.m = modules;\n/******/\n/******/ \t// expose the module cache\n/******/ \t__webpack_require__.c = installedModules;\n/******/\n/******/ \t// define getter function for harmony exports\n/******/ \t__webpack_require__.d = function(exports, name, getter) {\n/******/ \t\tif(!__webpack_require__.o(exports, name)) {\n/******/ \t\t\tObject.defineProperty(exports, name, {\n/******/ \t\t\t\tconfigurable: false,\n/******/ \t\t\t\tenumerable: true,\n/******/ \t\t\t\tget: getter\n/******/ \t\t\t});\n/******/ \t\t}\n/******/ \t};\n/******/\n/******/ \t// getDefaultExport function for compatibility with non-harmony modules\n/******/ \t__webpack_require__.n = function(module) {\n/******/ \t\tvar getter = module && module.__esModule ?\n/******/ \t\t\tfunction getDefault() { return module['default']; } :\n/******/ \t\t\tfunction getModuleExports() { return module; };\n/******/ \t\t__webpack_require__.d(getter, 'a', getter);\n/******/ \t\treturn getter;\n/******/ \t};\n/******/\n/******/ \t// Object.prototype.hasOwnProperty.call\n/******/ \t__webpack_require__.o = function(object, property) { return Object.prototype.hasOwnProperty.call(object, property); };\n/******/\n/******/ \t// __webpack_public_path__\n/******/ \t__webpack_require__.p = \"/\";\n/******/\n/******/ \t// Load entry module and return exports\n/******/ \treturn __webpack_require__(__webpack_require__.s = 0);\n/******/ })\n/************************************************************************/\n/******/ ([\n/* 0 */\n/***/ (function(module, exports) {\n\nself.addEventListener('message', function ({ data: { message, payload } }) {\n\tswitch (message) {\n\t\tcase 'initial':\n\t\t\tinitial(payload);\n\t\t\tbreak;\n\t\tdefault:\n\t\t\tbreak;\n\t}\n});\n\nfunction initial({ near_earth_objects }) {\n\tconst sortedByDate = sortByDate(near_earth_objects);\n\tsortedByDate.map((dayObject) => {\n\t\tconst result = sortByMeters(dayObject);\n\t\ttransferToMain({ payload: { [dayObject[0]]: result } });\n\t});\n};\n\nfunction sortByDate(near_earth_objects) {\n\treturn Object.entries(near_earth_objects).sort(function (obj1, obj2) {\n\t\treturn (new Date(obj2[0]) - new Date(obj1[0]));\n\t});\n};\n\nfunction sortByMeters(dayObject) {\n\treturn dayObject[1].sort(function (obj1, obj2) {\n\t\treturn obj1.estimated_diameter.meters.estimated_diameter_max - obj2.estimated_diameter.meters.estimated_diameter_max;\n\t});\n};\n\nfunction transferToMain({ payload }) {\n\tconst buffer = new ArrayBuffer(1024 * 1024 * 5);\n\tself.postMessage({\n\t\tpayload\n\t}, [buffer]);\n};\n\nfunction filterHazardous() {\n\n}\n\n/***/ })\n/******/ ]);\n//# sourceMappingURL=webWorker-c1e1d6892c7c5436c3d0.js.map", null);
+  return __webpack_require__(25)("/******/ (function(modules) { // webpackBootstrap\n/******/ \t// The module cache\n/******/ \tvar installedModules = {};\n/******/\n/******/ \t// The require function\n/******/ \tfunction __webpack_require__(moduleId) {\n/******/\n/******/ \t\t// Check if module is in cache\n/******/ \t\tif(installedModules[moduleId]) {\n/******/ \t\t\treturn installedModules[moduleId].exports;\n/******/ \t\t}\n/******/ \t\t// Create a new module (and put it into the cache)\n/******/ \t\tvar module = installedModules[moduleId] = {\n/******/ \t\t\ti: moduleId,\n/******/ \t\t\tl: false,\n/******/ \t\t\texports: {}\n/******/ \t\t};\n/******/\n/******/ \t\t// Execute the module function\n/******/ \t\tmodules[moduleId].call(module.exports, module, module.exports, __webpack_require__);\n/******/\n/******/ \t\t// Flag the module as loaded\n/******/ \t\tmodule.l = true;\n/******/\n/******/ \t\t// Return the exports of the module\n/******/ \t\treturn module.exports;\n/******/ \t}\n/******/\n/******/\n/******/ \t// expose the modules object (__webpack_modules__)\n/******/ \t__webpack_require__.m = modules;\n/******/\n/******/ \t// expose the module cache\n/******/ \t__webpack_require__.c = installedModules;\n/******/\n/******/ \t// define getter function for harmony exports\n/******/ \t__webpack_require__.d = function(exports, name, getter) {\n/******/ \t\tif(!__webpack_require__.o(exports, name)) {\n/******/ \t\t\tObject.defineProperty(exports, name, {\n/******/ \t\t\t\tconfigurable: false,\n/******/ \t\t\t\tenumerable: true,\n/******/ \t\t\t\tget: getter\n/******/ \t\t\t});\n/******/ \t\t}\n/******/ \t};\n/******/\n/******/ \t// getDefaultExport function for compatibility with non-harmony modules\n/******/ \t__webpack_require__.n = function(module) {\n/******/ \t\tvar getter = module && module.__esModule ?\n/******/ \t\t\tfunction getDefault() { return module['default']; } :\n/******/ \t\t\tfunction getModuleExports() { return module; };\n/******/ \t\t__webpack_require__.d(getter, 'a', getter);\n/******/ \t\treturn getter;\n/******/ \t};\n/******/\n/******/ \t// Object.prototype.hasOwnProperty.call\n/******/ \t__webpack_require__.o = function(object, property) { return Object.prototype.hasOwnProperty.call(object, property); };\n/******/\n/******/ \t// __webpack_public_path__\n/******/ \t__webpack_require__.p = \"/\";\n/******/\n/******/ \t// Load entry module and return exports\n/******/ \treturn __webpack_require__(__webpack_require__.s = 0);\n/******/ })\n/************************************************************************/\n/******/ ([\n/* 0 */\n/***/ (function(module, exports) {\n\nself.addEventListener('message', function ({ data: { message, payload } }) {\n\tswitch (message) {\n\t\tcase 'initial':\n\t\t\tinitial(payload);\n\t\t\tbreak;\n\t\tdefault:\n\t\t\tbreak;\n\t}\n});\n\nfunction initial({ near_earth_objects }) {\n\tconst sortedByDate = sortByDate(near_earth_objects);\n\tsortedByDate.map((dayObject) => {\n\t\tconst result = sortByMeters(dayObject);\n\t\ttransferToMain({ payload: { [dayObject[0]]: result } });\n\t});\n};\n\nfunction sortByDate(near_earth_objects) {\n\treturn Object.entries(near_earth_objects).sort(function (obj1, obj2) {\n\t\treturn (new Date(obj2[0]) - new Date(obj1[0]));\n\t});\n};\n\nfunction sortByMeters(dayObject) {\n\treturn dayObject[1].sort(function (obj1, obj2) {\n\t\treturn obj1.estimated_diameter.meters.estimated_diameter_max - obj2.estimated_diameter.meters.estimated_diameter_max;\n\t});\n};\n\nfunction transferToMain({ payload }) {\n\tconst buffer = new ArrayBuffer(1024 * 1024 * 5);\n\tself.postMessage({\n\t\tpayload\n\t}, [buffer]);\n};\n\n/***/ })\n/******/ ]);\n//# sourceMappingURL=webWorker-63e84b253b72b6b3eb86.js.map", null);
 };
 
 /***/ }),
@@ -1713,12 +1737,21 @@ var VisualisationContainer = function (_Component) {
 		value: function processData() {
 			var data = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
 
-			return Object.entries(data).map(function (dataGroup, key) {
-				var mappedData = dataGroup[1].map(function (datum) {
-					return datum.estimated_diameter.meters.estimated_diameter_max;
+			var mappedData = [];
+			var dataMax = 0;
+			Object.entries(data).map(function (dataGroup) {
+				dataGroup && dataGroup[1].map(function (d) {
+					// console.log(d);
+					var height = d.estimated_diameter.meters.estimated_diameter_max;
+					height > dataMax ? dataMax = height : null;
+					mappedData.push({
+						date: dataGroup[0],
+						height: height,
+						hazard: d.is_potentially_hazardous_asteroid
+					});
 				});
-				return _react2.default.createElement(_bubbleVisualisation2.default, { key: key, data: mappedData });
 			});
+			return _react2.default.createElement(_bubbleVisualisation2.default, { data: mappedData, dataMax: dataMax });
 		}
 	}, {
 		key: 'render',
@@ -1757,9 +1790,7 @@ var _react2 = _interopRequireDefault(_react);
 
 var _d3Scale = __webpack_require__(31);
 
-var _d3Array = __webpack_require__(32);
-
-var _d3Selection = __webpack_require__(33);
+var _d3Selection = __webpack_require__(32);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -1784,38 +1815,40 @@ var BubbleVisualisation = function (_Component) {
 	_createClass(BubbleVisualisation, [{
 		key: 'componentDidMount',
 		value: function componentDidMount() {
-			var data = this.props.data;
+			var _props = this.props,
+			    data = _props.data,
+			    dataMax = _props.dataMax;
 
-			this.createBarChart(data);
+			this.createBarChart(data, dataMax);
 		}
 	}, {
 		key: 'componentDidUpdate',
 		value: function componentDidUpdate() {
-			var data = this.props.data;
+			var _props2 = this.props,
+			    data = _props2.data,
+			    dataMax = _props2.dataMax;
 
-			this.createBarChart(data);
+			this.createBarChart(data, dataMax);
 		}
 	}, {
 		key: 'createBarChart',
-		value: function createBarChart(data) {
+		value: function createBarChart(data, dataMax) {
 			var height = 250;
-			var width = 250;
-			var dataMax = (0, _d3Array.max)(data); // get highest value in array
-			var dataLength = data.length;
-
 			var yScale = (0, _d3Scale.scaleLinear)().domain([0, dataMax]) // this translates to the peak and trough of the data
 			.range([0, height]); // this translates to the height of the svg on screen
 
 			var node = this.node;
 			(0, _d3Selection.select)(node).selectAll('rect').data(data, function (d) {
-				return d;
+				return d.height;
 			}).enter().append('rect').attr('x', function (d, i) {
-				return i * (width / dataLength);
-			}).attr('y', function (datum) {
-				return height - yScale(datum);
-			}).attr('width', width / dataLength).attr('height', function (d) {
-				return d;
+				return i * 10;
+			}).attr('y', function (d) {
+				return height - yScale(d.height);
+			}).attr('width', 10).attr('height', function (d) {
+				return d.height;
 			}).attr('fill', '#fe9922').attr('stroke', '#fff');
+
+			(0, _d3Selection.select)(node).selectAll('rect').exit().remove();
 		}
 	}, {
 		key: 'render',
@@ -1826,7 +1859,7 @@ var BubbleVisualisation = function (_Component) {
 				ref: function ref(node) {
 					return _this2.node = node;
 				},
-				width: 250, height: 250 });
+				width: 350, height: 250 });
 		}
 	}]);
 
@@ -1845,16 +1878,10 @@ module.exports = require("d3-scale");
 /* 32 */
 /***/ (function(module, exports) {
 
-module.exports = require("d3-array");
-
-/***/ }),
-/* 33 */
-/***/ (function(module, exports) {
-
 module.exports = require("d3-selection");
 
 /***/ }),
-/* 34 */
+/* 33 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1870,9 +1897,9 @@ var _regenerator = __webpack_require__(7);
 var _regenerator2 = _interopRequireDefault(_regenerator);
 
 var makeAPICall = exports.makeAPICall = function () {
-	var _ref = _asyncToGenerator( /*#__PURE__*/_regenerator2.default.mark(function _callee(_ref2) {
-		var oneDayAgo = _ref2.oneDayAgo,
-		    twoDaysAgo = _ref2.twoDaysAgo;
+	var _ref2 = _asyncToGenerator( /*#__PURE__*/_regenerator2.default.mark(function _callee(_ref3) {
+		var oneDayAgo = _ref3.oneDayAgo,
+		    twoDaysAgo = _ref3.twoDaysAgo;
 		var response, data;
 		return _regenerator2.default.wrap(function _callee$(_context) {
 			while (1) {
@@ -1899,7 +1926,7 @@ var makeAPICall = exports.makeAPICall = function () {
 	}));
 
 	return function makeAPICall(_x) {
-		return _ref.apply(this, arguments);
+		return _ref2.apply(this, arguments);
 	};
 }();
 
@@ -1911,10 +1938,14 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 
 function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, arguments); return new Promise(function (resolve, reject) { function step(key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { return Promise.resolve(value).then(function (value) { step("next", value); }, function (err) { step("throw", err); }); } } return step("next"); }); }; }
 
-function getDates(currentDate) {
+function getDates(_ref) {
+	var startDate = _ref.startDate,
+	    dateOffset = _ref.dateOffset;
+
+	// console.log(startDate, dateOffset);
 	return {
-		oneDayAgo: currentDate.setDate(currentDate.getDate() - 1),
-		twoDaysAgo: currentDate.setDate(currentDate.getDate() - 1)
+		oneDayAgo: startDate.setDate(startDate.getDate() - 1),
+		twoDaysAgo: startDate.setDate(startDate.getDate() - dateOffset)
 	};
 };
 
@@ -1932,9 +1963,9 @@ function formatDate(date) {
 
 ;
 
-function messageWebWorker(_ref3) {
-	var message = _ref3.message,
-	    payload = _ref3.payload;
+function messageWebWorker(_ref4) {
+	var message = _ref4.message,
+	    payload = _ref4.payload;
 
 	var buffer = new ArrayBuffer(1024 * 1024 * 5);
 	this.worker.postMessage({
@@ -1944,7 +1975,7 @@ function messageWebWorker(_ref3) {
 };
 
 /***/ }),
-/* 35 */
+/* 34 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1956,7 +1987,7 @@ Object.defineProperty(exports, "__esModule", {
 
 var _redux = __webpack_require__(10);
 
-var _reducers = __webpack_require__(36);
+var _reducers = __webpack_require__(35);
 
 var _reducers2 = _interopRequireDefault(_reducers);
 
@@ -1974,7 +2005,7 @@ window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__());
 exports.default = store;
 
 /***/ }),
-/* 36 */
+/* 35 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1986,7 +2017,7 @@ Object.defineProperty(exports, "__esModule", {
 
 var _redux = __webpack_require__(10);
 
-var _counter = __webpack_require__(37);
+var _counter = __webpack_require__(36);
 
 var _counter2 = _interopRequireDefault(_counter);
 
@@ -1999,7 +2030,7 @@ var reducer = (0, _redux.combineReducers)({
 exports.default = reducer;
 
 /***/ }),
-/* 37 */
+/* 36 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -2034,7 +2065,7 @@ exports.default = function () {
 };
 
 /***/ }),
-/* 38 */
+/* 37 */
 /***/ (function(module, exports) {
 
 // removed by extract-text-webpack-plugin
@@ -2042,4 +2073,4 @@ exports.default = function () {
 /***/ })
 /******/ ]);
 });
-//# sourceMappingURL=static.3ef79565.js.map
+//# sourceMappingURL=static.7302650b.js.map

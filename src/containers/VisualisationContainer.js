@@ -5,14 +5,22 @@ class VisualisationContainer extends Component {
 	constructor(props) {
 		super(props);
 	}
-
 	processData(data = {}) {
-		return Object.entries(data).map((dataGroup, key) => {
-			const mappedData = dataGroup[1].map((datum) => {
-				return datum.estimated_diameter.meters.estimated_diameter_max;
+		const mappedData = [];
+		let dataMax = 0;
+		Object.entries(data).map((dataGroup) => {
+			dataGroup && dataGroup[1].map((d) => {
+				// console.log(d);
+				const height = d.estimated_diameter.meters.estimated_diameter_max;
+				height > dataMax ? dataMax = height : null;
+				mappedData.push({
+					date: dataGroup[0],
+					height,
+					hazard: d.is_potentially_hazardous_asteroid
+				});
 			});
-			return <BubbleVisualisation key={key} data={mappedData}/>;
 		});
+		return <BubbleVisualisation data={mappedData} dataMax={dataMax}/>;
 	}
 
 	render() {

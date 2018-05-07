@@ -15,20 +15,18 @@ class Home extends Component {
 		this.state = {
 			average: 0,
 			data: undefined,
-			gpuAvailable: false,
-			offline: false,
-			gpuAcceleration: false,
-			webWorkerAvailable: false,
-			webWorkerAcceleration: false,
+			dateOffset: 2
 		};
 		this.worker = null;
 		this.TOSupport = false;
 		this.messageWebWorker = messageWebWorker.bind(this);
+		this.handleClick = this.handleClick.bind(this);
 	}
 
-	async main() {
+	async main({ dateOffset }) {
 		const currentDate = new Date();
-		const returnedDates = getDates(currentDate);
+		const returnedDates = getDates({ startDate: currentDate, dateOffset });
+		// console.log(returnedDates);
 		const response = await makeAPICall(returnedDates);
 		this.messageWebWorker({ message: 'initial', payload: response });
 	}
@@ -43,13 +41,23 @@ class Home extends Component {
 				}
 			});
 		});
-		this.main();
+		const { dateOffset } = this.state;
+		this.main({ dateOffset });
 	};
+
+	handleClick(e) {
+		e.preventDefault();
+		this.main({ dateOffset: e.target.value});
+	}
 
 	render() {
 		const { data } = this.state;
+		// console.log(data);
 		return (
 			<div>
+				<button onClick={this.handleClick} value='1'>1 day</button>
+				<button onClick={this.handleClick} value='3'>3 day</button>
+				<button onClick={this.handleClick} value='7'>7 day</button>
 				<h1>Near Earth Objects</h1>
 				<VisualisationContainer data={data} />
 				<DataContainer data={data} />

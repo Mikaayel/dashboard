@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import { scaleLinear } from 'd3-scale';
-import { max } from 'd3-array';
 import { select } from 'd3-selection';
 
 class BubbleVisualisation extends Component {
@@ -9,20 +8,15 @@ class BubbleVisualisation extends Component {
 		this.createBarChart = this.createBarChart.bind(this);
 	}
 	componentDidMount() {
-		const { data } = this.props;
-		this.createBarChart(data);
+		const { data, dataMax } = this.props;
+		this.createBarChart(data, dataMax);
 	}
 	componentDidUpdate() {
-		const { data } = this.props;
-		this.createBarChart(data);
+		const { data, dataMax } = this.props;
+		this.createBarChart(data, dataMax);
 	}
-
-	createBarChart(data) {
+	createBarChart(data, dataMax) {
 		const height = 250;
-		const width = 250;
-		const dataMax = max(data); // get highest value in array
-		const dataLength = data.length;
-
 		const yScale = scaleLinear()
 			.domain([0, dataMax]) // this translates to the peak and trough of the data
 			.range([0, height]); // this translates to the height of the svg on screen
@@ -30,21 +24,26 @@ class BubbleVisualisation extends Component {
 		const node = this.node;
 		select(node)
 			.selectAll('rect')
-			.data(data, (d) => d)
+			.data(data, (d) => d.height)
 			.enter()
 			.append('rect')
-			.attr('x', (d, i) => i * (width / dataLength))
-			.attr('y', datum => height - yScale(datum))
-			.attr('width', width / dataLength)
-			.attr('height', d => d)
+			.attr('x', (d, i) => i * 10)
+			.attr('y', d => height - yScale(d.height))
+			.attr('width', 10)
+			.attr('height', (d) => { return d.height;})
 			.attr('fill', '#fe9922')
 			.attr('stroke', '#fff');
+
+		select(node)
+			.selectAll('rect')
+			.exit().remove();
+
 	}
 	render() {
 		return(
 			<svg
 				ref={node => this.node = node}
-				width={250} height={250}>
+				width={350} height={250}>
 			</svg>
 		);
 	}

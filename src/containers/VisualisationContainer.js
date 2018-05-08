@@ -12,11 +12,14 @@ class VisualisationContainer extends Component {
 			dataGroup && dataGroup[1].map((d) => {
 				// console.log(d);
 				const height = d.estimated_diameter.meters.estimated_diameter_max;
+				const neo_id = d.neo_reference_id;
 				height > dataMax ? dataMax = height : null;
 				mappedData.push({
+					neo_id,
 					date: dataGroup[0],
 					height,
-					hazard: d.is_potentially_hazardous_asteroid
+					hazard: d.is_potentially_hazardous_asteroid,
+					miss_distance: d.close_approach_data[0].miss_distance.lunar
 				});
 			});
 		});

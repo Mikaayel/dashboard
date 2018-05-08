@@ -1743,11 +1743,14 @@ var VisualisationContainer = function (_Component) {
 				dataGroup && dataGroup[1].map(function (d) {
 					// console.log(d);
 					var height = d.estimated_diameter.meters.estimated_diameter_max;
+					var neo_id = d.neo_reference_id;
 					height > dataMax ? dataMax = height : null;
 					mappedData.push({
+						neo_id: neo_id,
 						date: dataGroup[0],
 						height: height,
-						hazard: d.is_potentially_hazardous_asteroid
+						hazard: d.is_potentially_hazardous_asteroid,
+						miss_distance: d.close_approach_data[0].miss_distance.lunar
 					});
 				});
 			});
@@ -1838,17 +1841,21 @@ var BubbleVisualisation = function (_Component) {
 			.range([0, height]); // this translates to the height of the svg on screen
 
 			var node = this.node;
-			(0, _d3Selection.select)(node).selectAll('rect').data(data, function (d) {
+			(0, _d3Selection.select)(node).selectAll('circle').data(data, function (d) {
 				return d.height;
-			}).enter().append('rect').attr('x', function (d, i) {
+			}).enter().append('circle').attr('cx', function (d, i) {
 				return i * 10;
-			}).attr('y', function (d) {
+			}).attr('cy', function (d) {
 				return height - yScale(d.height);
-			}).attr('width', 10).attr('height', function (d) {
+			}).attr('r', function (d) {
+				return d.height / dataMax * 100;
+			}).attr('height', function (d) {
 				return d.height;
 			}).attr('fill', function (d) {
 				return d.hazard ? 'red' : '#fe9922';
 			}).attr('stroke', '#fff');
+
+			(0, _d3Selection.select)(node).selectAll('rect');
 
 			(0, _d3Selection.select)(node).selectAll('rect').exit().remove();
 		}
@@ -1861,7 +1868,7 @@ var BubbleVisualisation = function (_Component) {
 				ref: function ref(node) {
 					return _this2.node = node;
 				},
-				width: 350, height: 250 });
+				width: '100%', height: 250 });
 		}
 	}]);
 
@@ -2075,4 +2082,4 @@ exports.default = function () {
 /***/ })
 /******/ ]);
 });
-//# sourceMappingURL=static.51cf1f1a.js.map
+//# sourceMappingURL=static.6287f987.js.map

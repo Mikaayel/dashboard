@@ -23,16 +23,19 @@ class BubbleVisualisation extends Component {
 
 		const node = this.node;
 		select(node)
-			.selectAll('rect')
+			.selectAll('circle')
 			.data(data, (d) => d.height)
 			.enter()
-			.append('rect')
-			.attr('x', (d, i) => i * 10)
-			.attr('y', d => height - yScale(d.height))
-			.attr('width', 10)
+			.append('circle')
+			.attr('cx', (d, i) => i * 10)
+			.attr('cy', d => height - yScale(d.height))
+			.attr('r', d => d.height / dataMax * 100 )
 			.attr('height', (d) => { return d.height;})
 			.attr('fill', d => d.hazard ? 'red' : '#fe9922')
 			.attr('stroke', '#fff');
+
+		select(node)
+			.selectAll('rect');
 
 		select(node)
 			.selectAll('rect')
@@ -43,7 +46,7 @@ class BubbleVisualisation extends Component {
 		return(
 			<svg
 				ref={node => this.node = node}
-				width={350} height={250}>
+				width="100%" height={250}>
 			</svg>
 		);
 	}
